@@ -50,6 +50,8 @@ pyparsing==2.4.7
 
 python-dateutil==2.8.1
 
+python ==3.10.0
+
 pytz==2020.4
 
 requests==2.25.1
