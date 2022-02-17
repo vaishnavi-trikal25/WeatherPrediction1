@@ -1,71 +1,67 @@
-#importing libraries 
-import numpy as np  
-import pandas as pd 
-import matplotlib.pyplot as plt
-import seaborn as sns
+#!/usr/bin/env python
+# coding: utf-8
 
-df=pd.read_csv("Seattle_WeatherPredicton.csv",sep=",")
-temp_max=df["temp_max"]
-precipitation=df["precipitation"]
+# In[3]:
 
 
-df.head(30)
+"""
+Created on Mon Feb 7 02:02:49 2022
 
-x = np.array(temp_max).reshape(-1, 1)
-y = np.array(precipitation)
+@auther: Vaishnavi Trikal
 
-#Splitting the data into Train and Test
-from sklearn.model_selection import train_test_split 
-xtrain, xtest, ytrain, ytest = train_test_split(  x, y, test_size=1/2, random_state=1 )
+"""
+import numpy as np
+import pickle
+import pandas as pd
 
-from sklearn.linear_model import LinearRegression 
-regressor = LinearRegression()
-regressor.fit( xtrain, ytrain )
 
-print(df.shape)  #checking dimensions of Dataset
+import streamlit as st 
 
-#Data Preprocessing to clean, organize the data  and read-to-feed to the Machine Learning model.
+from PIL import Image
 
-print(df.info()) #converting raw data to a suitable format
 
-df.isnull().sum()*100/len(df)  #checking for null values
+pickle_in = open("Seattle_WeatherPredicton.csv","rb")
+Seattle_WeatherPredicton.csv=pickle.load(pickle_in)
 
-regressor.coef_ , regressor.intercept_   #y = mx + c  where m is coefficient , c is intercept
 
-actualValue = ytrain
-predictedValue = regressor.predict(xtrain) 
-xtrain[0], actualValue[0] , predictedValue[0]
+def welcome():
+    return "Welcome All"
 
-regressor.coef_ * xtrain[0] + regressor.intercept_ #y = mx + c
+#@app.route
+def predict_WeatherPrediction(date,precipitation,temp_max,temp_min,wind_speed,weather):
+ prediction=classifier.predict([[date,precipitation,temp_max,temp_min,wind_speed,weather]])
+ print(prediction)
+ return prediction
 
-# Actual values
-plt.scatter(xtrain, ytrain, color='blue') # x = xtrain , y = ytrain
 
-#Predicted values
-prediction = regressor.predict(xtrain)
-plt.plot(xtrain, prediction , color = 'green') # y = prediction
 
-plt.title ("Prediction for Training Dataset")
-plt.xlabel("temp_max in degrees"), plt.ylabel("Precipitation")
-plt.show()
+def main():
+    st.title("")
+    html_temp = """
+    <div style="background-color:tomato;padding:10px">
+    <h2 style="color:white;text-align:center;">Streamlit WeatherPrediction ML App </h2>
+    </div>
+    """
+    st.markdown(html_temp,unsafe_allow_html=True)
+    date = st.text_input("date","Type Here")
+    precipitation = st.text_input("precipitation","Type Here")
+    temp_max = st.text_input("temp_max","Type Here")
+    temp_min = st.text_input("temp_min","Type Here")
+    weather = st.text_input("weather","Type Here")
+    result=""
+    if st.button("Predict"):
+        result=predict_WeatherPrediction(date,precipitation,temp_max,temp_min,weather)
+    st.success('The output is {}'.format(result))
+    if st.button("About"):
+        st.text("Lets Learn")
+        st.text("Built with Streamlit")
 
-plt.scatter(xtest, ytest, color= 'blue')
+if __name__=='__main__':
+    main()
 
-plt.plot(xtrain, regressor.predict(xtrain), color = 'orange')
 
-plt.title ("Training Dataset:")
-plt.xlabel("max_temp in degree"), plt.ylabel("Precipitation")
-plt.show()
+# In[ ]:
 
-cor = df.corr()
-plt.figure(figsize=(10,6))
-sns.heatmap(cor,annot=True , cmap='coolwarm')
-plt.show()
 
-data = ["precipitation","temp_max","temp_min"]
-for col in data:
-    plt.figure(figsize=(20,10))
-    plt.hist(df[col])
-    plt.title(col)
-    plt.show()
+
 
