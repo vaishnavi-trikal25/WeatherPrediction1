@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+    <head>
+        <meta charset="UTF-8">
+        <title>Weather_Prediction</title>
+        <link href="D:\weather\style.css" rel = "stylesheet"> 
+        <link rel="stylesheet" href="./style.css">
+  
+    </head>
+
+    <body>
+        <div class="login">
+	    <h1>Weather Prediction Analysis</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+        <form action="{{ url_for('predict')}}"method="post">
+    	    <input type="text" name="precipitation" placeholder="Enter PRECIPITATION" required="required" />
+            <input type="text" name="temp_max" placeholder="Enter Maximum Temprature" required="required" />
+		    <input type="text" name="temp_min" placeholder="Enter Minimum Temprature" required="required" />
+            <img src="Image.jpeg" alt="" />
+
+            <button type="submit" >Predict</button>
+        </form> 
+        <br>
+        <br>
+        {{ prediction_text }}
+
+    </div>
+</body>
+
+</html>
